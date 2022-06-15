@@ -17,6 +17,7 @@ const morph_result = (json) => {
     const download = obj.download;
     const upload = obj.upload;
     const ping = obj.ping;
+    const ip = obj.client.ip
     const isp = obj.client.isp;
     const lat = obj.client.lat;
     const lon = obj.client.lon;
@@ -27,6 +28,7 @@ const morph_result = (json) => {
             upload,
             ping,
             ping,
+            ip,
             isp,
             lat,
             lon,
