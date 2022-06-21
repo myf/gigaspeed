@@ -5,7 +5,26 @@ const lights = require('./lights');
 const run = async () => {
     const content = await speedtest();
     const result = await publish(content);
-    await lights.med();
+    await indicate(content);
+    return;
+}
+
+const indicate = async (content) => {
+    const speed_mb = content.download / 10**6;
+    switch (true) {
+        case speed_mb < 0.1:
+            await lights.low();
+            break;
+        case (speed_mb > 0.1 && speed_mb < 20):
+            await lights.med();
+            break;
+        case speed_mb > 20:
+            await lights.high();
+            break;
+        default:
+            console.error(`content is unparsable ${content}`);
+            break;
+    }
     return;
 }
 
