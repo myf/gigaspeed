@@ -111,5 +111,18 @@ Lights.high = async() => {
     return;
 }
 
+Lights.connected = async() => {
+    await Lights.onset(Lights.blue);
+    await sleep(1000);
+    await blink(3, Lights.green);
+    await Lights.onset(Lights.green);
+    return;
+}
+
+Lights.disconnected = async() => {
+    await blink(3, Lights.red);
+    await Lights.onset(Lights.red);
+    return;
+}
 
 module.exports = Lights;
