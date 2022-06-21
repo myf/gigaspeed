@@ -18,31 +18,46 @@ Lights.yellow = [255, 115, 0];
 Lights.green = [0, 255, 0];
 Lights.blue = [0, 0, 255];
 
-Lights.on = (color) => {
-	ledStrip.all(...color, INTENSITY);
+Lights.on = (color, intensity) => {
+	ledStrip.all(...color, intensity || INTENSITY);
 	ledStrip.sync();
 }
+
+Lights.onset = async(color) => {
+    const steps = 5;
+    const duration = 100;
+    for (let i=0; i<steps; i++) {
+        const intensity = INTENSITY / (steps - i )
+        await Lights.on(color, intensity);
+        await sleep(duration / steps)
+    }
+    return;
+}
+
 
 Lights.off = () => {
     ledStrip.clear();
     ledStrip.sync();
+    return;
 }
 
-const sleep =() => new Promise((res, rej) => {setTimeout(res, TIMEOUT)});
+const sleep =(timeout) => new Promise((res, rej) => {setTimeout(res, timeout || TIMEOUT)});
 
 const blink_once = async (color) => {
-    Lights.on(color);
+    await Lights.onset(color);
     await sleep();
-    Lights.off();
+    await Lights.off();
     await sleep();
 }
 
-Lights.blink = async(times, color) => {
+const blink = async(times, color) => {
     for (let i = times; i>0; i--) {
         await blink_once(color);
     }
     return;
 }
+
+Lights.blink = blink;
 
 const matrix = [2, 8, 15, 20, 15, 8, 2];
 
@@ -77,14 +92,23 @@ const bar = async (num, color) => {
 
 Lights.low = async() => {
     await bar(3, Lights.red);
+    await blink(3, Lights.red);
+    await Lights.onset(Lights.red);
+    return;
 }
 
 Lights.med = async() => {
     await bar(5, Lights.yellow);
+    await blink(3, Lights.yellow);
+    await Lights.onset(Lights.yellow);
+    return;
 }
 
 Lights.high = async() => {
     await bar(7, Lights.green);
+    await blink(3, Lights.green);
+    await Lights.onset(Lights.green);
+    return;
 }
 
 
