@@ -79,6 +79,8 @@ Lights.init_seq = async () => {
         line(6-i, Lights.blue);
         await sleep();
     }
+    await blink(3, Lights.blue);
+    await Lights.onset(Lights.blue);
     return;
 }
 
@@ -113,7 +115,7 @@ Lights.high = async() => {
 
 Lights.connected = async() => {
     await Lights.onset(Lights.blue);
-    await sleep(1000);
+    await sleep(2000); // benedetta wants 2 second
     await blink(3, Lights.green);
     await Lights.onset(Lights.green);
     return;
