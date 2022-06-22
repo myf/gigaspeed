@@ -1,0 +1,10 @@
+[Unit]
+Description=run giga speed test every 5 minutes
+
+[Timer]
+OnCalendar=*:0/5:00
+Persistent=true
+Unit=giga@.service
+
+[Install]
+WantedBy=timers.target

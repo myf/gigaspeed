@@ -1,0 +1,10 @@
+[Unit]
+Description=display a light sequence when the system is starting
+After=syslog.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/node /home/giga/giga/cli.js lights --status=init
+
+[Install]
+WantedBy=multi-user.target
