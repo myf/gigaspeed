@@ -1,5 +1,6 @@
 [Unit]
 Description=Giga speedtest
+Requires=ssb-server@%I.service
 After=network.target
 
 [Service]
