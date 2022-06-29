@@ -7,18 +7,22 @@ const SPI = require('pi-spi');
 spi = SPI.initialize('/dev/spidev0.0');
 const ledStripLength = LENGTH;
 
-const ledStrip = new dotstar.Dotstar(spi, {
-  length: ledStripLength
-});
-
 let Lights = {};
+
+Lights.init = () => {
+    const ledStrip = new dotstar.Dotstar(spi, {
+      length: ledStripLength
+    });
+    return ledStrip;
+}
 
 Lights.red = [255, 0, 0];
 Lights.yellow = [255, 115, 0];
 Lights.green = [0, 255, 0];
 Lights.blue = [0, 0, 255];
 
-Lights.on = (color, intensity) => {
+Lights.on = (color, intensity, ledStrip) => {
+    ledStrip = ledStrip || Lights.init();
 	ledStrip.all(...color, intensity || INTENSITY);
 	ledStrip.sync();
 }
@@ -34,8 +38,8 @@ Lights.onset = async(color) => {
     return;
 }
 
-
 Lights.off = () => {
+    const ledStrip = Lights.init();
     ledStrip.clear();
     ledStrip.sync();
     return;
@@ -61,7 +65,8 @@ Lights.blink = blink;
 
 const matrix = [2, 8, 15, 20, 15, 8, 2];
 
-const line = (num, color) => {
+const line = (num, color, ledStrip) => {
+    ledStrip = ledStrip || Lights.init();
     matrix.reduce((pre, cur,idx,arr) => {
         if (idx === num) {
             for (let i = pre; i < pre + cur; i++) {
@@ -74,9 +79,10 @@ const line = (num, color) => {
 }
 
 Lights.init_seq = async () => {
+    const l = Lights.init();
     for (let i=3; i>=0 ; i--) {
-        line(i, Lights.blue);
-        line(6-i, Lights.blue);
+        line(i, Lights.blue, l);
+        line(6-i, Lights.blue, l);
         await sleep();
     }
     await blink(3, Lights.blue);
@@ -84,30 +90,33 @@ Lights.init_seq = async () => {
     return;
 }
 
-const bar = async (num, color) => {
+const bar = async (num, color, ledStrip) => {
     for (let i = 0; i< num; i++) {
-        line(6-i, color);
+        line(6-i, color, ledStrip);
         await sleep();
     }
     return;
 }
 
 Lights.low = async() => {
-    await bar(3, Lights.red);
+    const l = Lights.init()
+    await bar(3, Lights.red, l);
     await blink(3, Lights.red);
     await Lights.onset(Lights.red);
     return;
 }
 
 Lights.med = async() => {
-    await bar(5, Lights.yellow);
+    const l = Lights.init()
+    await bar(5, Lights.yellow, l);
     await blink(3, Lights.yellow);
     await Lights.onset(Lights.yellow);
     return;
 }
 
 Lights.high = async() => {
-    await bar(7, Lights.green);
+    const l = Lights.init()
+    await bar(7, Lights.green, l);
     await blink(3, Lights.green);
     await Lights.onset(Lights.green);
     return;
