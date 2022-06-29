@@ -3,7 +3,8 @@ Description=display a light sequence when the system is starting
 After=syslog.target
 
 [Service]
-Type=forking
+Type=simple
+>>>>>>> Stashed changes
 ExecStart=/usr/bin/node /home/giga/giga/cli.js lights --status=init
 
 [Install]
