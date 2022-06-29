@@ -4,7 +4,6 @@ After=syslog.target
 
 [Service]
 Type=simple
->>>>>>> Stashed changes
 ExecStart=/usr/bin/node /home/giga/giga/cli.js lights --status=init
 
 [Install]

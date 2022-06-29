@@ -1,5 +1,5 @@
 const INTENSITY = 0.2;
-const LENGTH = 77;
+const LENGTH = 71;
 const TIMEOUT = 300;
 const dotstar = require('dotstar');
 const SPI = require('pi-spi');
