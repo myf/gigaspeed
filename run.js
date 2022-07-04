@@ -1,10 +1,13 @@
 const speedtest = require('./speedtest');
 const publish = require('./ssb');
 const lights = require('./lights');
+const fs = require('fs/promises');
 
 const run = async () => {
     const content = await speedtest();
     const result = await publish(content);
+    await fs.writeFile('/home/giga/GIGANode/Frontend/data/wat.json', 
+                       JSON.stringify([result]));
     await indicate(content);
     return;
 }
