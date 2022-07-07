@@ -1,0 +1,35 @@
+{   
+  "allowPrivate": true,
+  "ws": {
+    "port": 9191
+  }, 
+  "caps": {
+    "shs": "[generate the shs]",
+    "sign": null  
+  },
+  "connections": {
+    "incoming": {
+      "net": [{
+          "host": "[your own yggdrasil address]",
+          "port": 1337,
+          "scope": "public",
+          "transform": "shs"
+      },
+      {
+          "host": "localhost",
+          "port": 8008,
+          "scope": "device",
+          "transform": "shs"
+      }
+    ]
+    },
+    "outgoing": {
+      "net": [{
+          "transform": "shs"
+      }]
+    }
+  },
+  "plugins": {
+  }
+}
+
